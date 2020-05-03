@@ -8,17 +8,28 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
 //  define playSound function
 
-  void playSound(int soundNumber) {
+  void playSound(String soundChord) {
     final player = AudioCache();
-    player.play('note$soundNumber.wav');
+    player.play('chr-$soundChord.wav');
   }
 
-  Expanded buildKey({int soundNumber, Color color}) {
+  void playLongSound(String soundLongChord) {
+    final player = AudioCache();
+    player.play('chr-$soundLongChord.wav');
+  }
+
+  Expanded buildKey({String soundChord, String soundLongChord, Color color}) {
     return Expanded(
       child: FlatButton(
+        splashColor: Color(0xffffcccb),
+        highlightColor: Color(0xffff7961),
         color: color,
+        child: Text(soundChord),
         onPressed: () {
-          playSound(soundNumber);
+          playSound(soundChord);
+        },
+        onLongPress: () {
+          playLongSound(soundLongChord);
         },
       ),
     );
@@ -28,20 +39,48 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.lightGreen,
         body: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              buildKey(soundNumber: 1, color: Colors.red),
-              buildKey(soundNumber: 2, color: Colors.orange),
-              buildKey(soundNumber: 3, color: Colors.yellow),
-              buildKey(soundNumber: 4, color: Colors.teal),
-              buildKey(soundNumber: 5, color: Colors.green),
-              buildKey(soundNumber: 6, color: Colors.blue),
-              buildKey(soundNumber: 7, color: Colors.purple),
+              buildKey(
+                soundChord: 'g',
+                soundLongChord: 'g-open',
+                color: Color(0xffe0f2f1),
+              ),
+              buildKey(
+                soundChord: 'c',
+                soundLongChord: 'c-open',
+                color: Color(0xffb2dfdb),
+              ),
+              buildKey(
+                soundChord: 'e-oct',
+                soundLongChord: 'e5th-open',
+                color: Color(0xff80cbc4),
+              ),
+              buildKey(
+                soundChord: 'a-oct',
+                soundLongChord: 'a5th-open',
+                color: Color(0xff4db6ac),
+              ),
+              buildKey(
+                soundChord: 'd-oct',
+                soundLongChord: 'bmin-open',
+                color: Color(0xff00796b),
+              ),
             ],
           ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            playSound('pinch-harmonic');
+          },
+          child: new Icon(
+            Icons.music_note,
+            color: Colors.black87,
+          ),
+          backgroundColor: Colors.white,
         ),
       ),
     );
